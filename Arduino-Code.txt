@@ -1,0 +1,97 @@
+int echo=13;
+int trigger=12;
+
+int motor1 = 7;
+int motor2 = 8;
+
+//int buttonOut=9;
+int buttonIn=10;
+
+double timer;
+double distance;
+int counter=0;
+
+int UP=0;
+
+void setup() {
+  // put your setup code here, to run once:
+  pinMode(echo,INPUT);
+  pinMode(trigger,OUTPUT);
+//-  pinMode(buttonOut,OUTPUT);
+  pinMode(buttonIn,INPUT);
+  Serial.begin(9600);
+  pinMode(motor1,OUTPUT);
+  pinMode(motor2,OUTPUT);
+  
+}
+
+void loop() {
+
+//   put your main code here, to run repeatedly:
+  digitalWrite(trigger,LOW);
+  delay(1);
+  digitalWrite(trigger,HIGH);
+  delay(1);
+  digitalWrite(trigger,LOW);
+
+  timer = pulseIn(echo,HIGH);
+
+  
+  distance=timer*0.017;
+  delay(20);
+  Serial.print("Dist=");
+  Serial.println(distance);
+//  digitalWrite(buttonOut,HIGH);
+  int x = digitalRead(buttonIn);
+  delay(100);
+  Serial.println(x);
+  Serial.println(UP);
+// push botton go dabaya to bda mza aaya ... counter ko badaya 
+  if ( x==1 && UP==0 ){
+
+     digitalWrite(motor1,LOW);
+     digitalWrite(motor2,HIGH);
+     delay(4000);
+     UP = 1;
+     digitalWrite(motor1,LOW);
+     digitalWrite(motor2,LOW);
+//    delay(1000);
+    while(1>0){
+        digitalWrite(trigger,LOW);
+      delay(1);
+      digitalWrite(trigger,HIGH);
+      delay(1);
+      digitalWrite(trigger,LOW);
+    
+      timer = pulseIn(echo,HIGH);
+    
+      
+      distance=timer*0.017;
+      delay(20);
+      if(distance<33){
+        break; 
+       }
+       Serial.println("InWhile");
+      digitalWrite(motor1,LOW);
+     digitalWrite(motor2,HIGH);
+     delay(5);
+      digitalWrite(motor1,LOW);
+     digitalWrite(motor2,LOW);
+     delay(5);
+      }
+  }
+
+  
+  
+  if (distance<33 && UP == 1){
+    
+          digitalWrite(motor1,HIGH);
+          digitalWrite(motor2,LOW); 
+          UP = 0;
+          delay(700);
+          digitalWrite(motor1,LOW);
+          digitalWrite(motor2,LOW);
+       //   delay(3000);     
+   }
+   
+}
